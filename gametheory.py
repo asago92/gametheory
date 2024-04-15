@@ -10,6 +10,8 @@ A = np.array([[0, 10],   # No alarm: Stay in bed, Get up
 B = np.array([[10, 0],   # No alarm: Stay in bed, Get up
               [-5, -1]]) # Set alarm: Stay in bed, Get up
 
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
 # Create the game
 game = nash.Game(A, B)
 
