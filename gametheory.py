@@ -1,35 +1,16 @@
 import streamlit as st
-import gambit
+import nashpy as nash
+import numpy as np
 
 def create_game():
-    # Define the number of players
-    num_players = 2
-    # Create a new game with 2 players, each with 2 strategies
-    game = gambit.Game.new_table([2, 2])
+    # Define the payoff matrices for the players
+    A = np.array([[1, 0],  # Payoffs when Player 1 wakes up
+                  [2, 0]]) # Payoffs when Player 1 doesn't wake up
+    B = np.array([[1, 2],  # Payoffs when Player 2 wakes up
+                  [0, 0]]) # Payoffs when Player 2 doesn't wake up
 
-    # Define the players' labels
-    game.players[0].label = "Player 1"
-    game.players[1].label = "Player 2"
-
-    # Define strategies
-    game.players[0].strategies[0].label = "Wakes Up"
-    game.players[0].strategies[1].label = "Doesn't Wake Up"
-    game.players[1].strategies[0].label = "Wakes Up"
-    game.players[1].strategies[1].label = "Doesn't Wake Up"
-
-    # Define payoffs
-    game[0, 0][0] = 1  # Player 1's payoff
-    game[0, 0][1] = 1  # Player 2's payoff
-
-    game[0, 1][0] = 0
-    game[0, 1][1] = 2
-
-    game[1, 0][0] = 2
-    game[1, 0][1] = 0
-
-    game[1, 1][0] = 0
-    game[1, 1][1] = 0
-
+    # Create the game
+    game = nash.Game(A, B)
     return game
 
 def main():
@@ -37,10 +18,13 @@ def main():
 
     if st.button("Show Payoff Matrix"):
         game = create_game()
-        st.write("Payoff Matrix:")
-        st.write(game)
+        st.write("Payoff Matrix for Player 1 (Row player):")
+        st.write(game.payoff_matrices[0])
+        st.write("Payoff Matrix for Player 2 (Column player):")
+        st.write(game.payoff_matrices[1])
 
 if __name__ == "__main__":
     main()
+
 
 
