@@ -15,20 +15,25 @@ def create_game():
     return game
 
 def plot_payoff_matrix(game):
+    # Extract payoff matrices
+    payoff_matrix_1 = game.payoff_matrices[0]
+    payoff_matrix_2 = game.payoff_matrices[1]
+
+    # Combine payoffs into a single string for display
+    combined_payoffs = np.array([[f"{payoff_matrix_1[i, j]}\n{payoff_matrix_2[i, j]}"
+                                  for j in range(payoff_matrix_1.shape[1])]
+                                 for i in range(payoff_matrix_1.shape[0])])
+
     fig, ax = plt.subplots()
-    matrix = np.dstack(game.payoff_matrices)
-    cax = ax.matshow(matrix, cmap='coolwarm')
+    # Create a table with the combined payoffs
+    table = ax.table(cellText=combined_payoffs, colLabels=["Wakes Up", "Doesn't Wake Up"], rowLabels=["Player 1", "Player 2"], cellLoc='center', loc='center')
 
-    # Set up axes
-    ax.set_xticklabels([''] + ["Wakes Up", "Doesn't Wake Up"], rotation=45)
-    ax.set_yticklabels([''] + ["Player 1", "Player 2"])
+    # Hide axes
+    ax.axis('off')
+    table.auto_set_font_size(False)
+    table.set_fontsize(14)
+    table.scale(1, 2)  # scale column widths and row heights
 
-    # Loop over data dimensions and create text annotations.
-    for i in range(matrix.shape[0]):
-        for j in range(matrix.shape[1]):
-            ax.text(j, i, f'{game.payoff_matrices[0][i, j]}\n{game.payoff_matrices[1][i, j]}', ha='center', va='center', color='black')
-
-    plt.colorbar(cax, ax=ax)
     return fig
 
 def main():
