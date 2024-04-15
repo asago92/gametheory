@@ -2,18 +2,33 @@ import streamlit as st
 import gambit
 
 def create_game():
-    # Define the players and actions
-    players = ["Player 1 (Wakes Up)", "Player 2 (Doesn't Wake Up)"]
-    actions = ["Wakes Up", "Doesn't Wake Up"]
+    # Define the number of players
+    num_players = 2
+    # Create a new game with 2 players, each with 2 strategies
+    game = gambit.Game.new_table([2, 2])
 
-    # Create the game
-    game = gambit.NormalFormGame(players, actions)
+    # Define the players' labels
+    game.players[0].label = "Player 1"
+    game.players[1].label = "Player 2"
+
+    # Define strategies
+    game.players[0].strategies[0].label = "Wakes Up"
+    game.players[0].strategies[1].label = "Doesn't Wake Up"
+    game.players[1].strategies[0].label = "Wakes Up"
+    game.players[1].strategies[1].label = "Doesn't Wake Up"
 
     # Define payoffs
-    game[0, 0] = (1, 1)  # Player 1 wakes up, Player 2 wakes up
-    game[0, 1] = (0, 2)  # Player 1 wakes up, Player 2 doesn't wake up
-    game[1, 0] = (2, 0)  # Player 1 doesn't wake up, Player 2 wakes up
-    game[1, 1] = (0, 0)  # Player 1 doesn't wake up, Player 2 doesn't wake up
+    game[0, 0][0] = 1  # Player 1's payoff
+    game[0, 0][1] = 1  # Player 2's payoff
+
+    game[0, 1][0] = 0
+    game[0, 1][1] = 2
+
+    game[1, 0][0] = 2
+    game[1, 0][1] = 0
+
+    game[1, 1][0] = 0
+    game[1, 1][1] = 0
 
     return game
 
@@ -27,4 +42,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
