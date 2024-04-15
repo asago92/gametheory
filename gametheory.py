@@ -3,27 +3,35 @@ import gambit
 
 def create_game():
     game = gambit.Game.new_table([2, 2])
+
+    # Define players and actions
+    players = ["Player 1 (Wakes Up)", "Player 2 (Doesn't Wake Up)"]
+    actions = ["Wakes Up", "Doesn't Wake Up"]
+    game.players = players
+    game.actions = actions
+
+    # Define payoffs
+    game[0, 0][0] = 1  # Player 1 wakes up, Player 2 wakes up
+    game[0, 0][1] = 1
+
+    game[0, 1][0] = 0  # Player 1 wakes up, Player 2 doesn't wake up
+    game[0, 1][1] = 2
+
+    game[1, 0][0] = 2  # Player 1 doesn't wake up, Player 2 wakes up
+    game[1, 0][1] = 0
+
+    game[1, 1][0] = 0  # Player 1 doesn't wake up, Player 2 doesn't wake up
+    game[1, 1][1] = 0
+
     return game
 
-def solve_game(game):
-    solver = gambit.nash.ExternalLCPSolver()
-    solver.quiet = True
-    solver.solve(game)
-    return game.mixed_strategy_profile()
 def main():
-    st.title("Game Theory App")
+    st.title("Payoff Matrix for Waking Up Early")
 
-    if st.button("Create Game"):
+    if st.button("Show Payoff Matrix"):
         game = create_game()
-        st.success("Game created successfully!")
-
-    if st.button("Solve Game"):
-        try:
-            strategies = solve_game(game)
-            st.write("Mixed Strategy Profile:")
-            st.write(strategies)
-        except NameError:
-            st.error("Please create a game first!")
+        st.write("Payoff Matrix:")
+        st.write(game)
 
 if __name__ == "__main__":
     main()
